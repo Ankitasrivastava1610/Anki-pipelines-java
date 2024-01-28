@@ -9,14 +9,21 @@ trigger:
 pool:
   vmImage: ubuntu-latest
 
-steps:
-- task: Maven@4
-  inputs:
-    mavenPomFile: 'pom.xml'
-    mavenOptions: '-Xmx3072m'
-    javaHomeOption: 'JDKVersion'
-    jdkVersionOption: '1.8'
-    jdkArchitectureOption: 'x64'
-    publishJUnitResults: true
-    testResultsFiles: '**/TEST-*.xml'
-    goals: 'package'
+stages:
+- stage: 'Build'
+  displayName: 'Build webapp'
+  jobs:
+  - job: 'build'
+    displayName: 'build job'
+    pool:
+     vmImage: 'ubuntu-latest'
+    steps:
+      - task: Maven@1
+        inputs:
+         mavenPomFile: 'pom.xml'
+         mavenOptions: '-Xmx3072m'
+         javaHomeOption: 'JDKVersion'
+         jdkVersionOption: '1.8'
+         jdkArchitectureOption: 'x64'
+      
+      
