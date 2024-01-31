@@ -9,13 +9,12 @@ stages:
       - task: Maven@4
         inputs:
           mavenPomFile: 'pom.xml'
-          goals: 'build'
+          goals: 'compile'
           publishJUnitResults: false
           javaHomeOption: 'JDKVersion'
           mavenVersionOption: 'Default'
           mavenAuthenticateFeed: false
           effectivePomSkip: false
-          sonarQubeRunAnalysis: false
 
   - job: "test"
     steps:
@@ -26,15 +25,10 @@ stages:
           publishJUnitResults: true
           testResultsFiles: '**/surefire-reports/TEST-*.xml'
           testRunTitle: 'Unit Test'
-          codeCoverageToolOption: 'Cobertura'
-          codeCoverageFailIfEmpty: false
-          codeCoverageRestoreOriginalPomXml: true
           javaHomeOption: 'JDKVersion'
           mavenVersionOption: 'Default'
           mavenAuthenticateFeed: false
           effectivePomSkip: false
-          sonarQubeRunAnalysis: true
-          sqMavenPluginVersionChoice: 'latest'
           pmdRunAnalysis: true
           
   - job: "package"
@@ -47,5 +41,4 @@ stages:
           mavenVersionOption: 'Default'
           mavenAuthenticateFeed: false
           effectivePomSkip: false
-          sonarQubeRunAnalysis: false
           goals: 'package'
