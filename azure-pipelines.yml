@@ -46,11 +46,15 @@ stages:
   - job: "publish"
     dependsOn: package
     steps:
-      - task: PublishPipelineArtifact@1
+      - task: Maven@4
         inputs:
-          targetPath: '$(Pipeline.Workspace)'
-          artifact: 'Drop1'
-          publishLocation: 'pipeline'
+          mavenPomFile: 'pom.xml'
+          publishJUnitResults: false
+          javaHomeOption: 'JDKVersion'
+          mavenVersionOption: 'Default'
+          mavenAuthenticateFeed: false
+          effectivePomSkip: false
+          goals: 'deploy'
 
       # - task: PublishBuildArtifacts@1
       #   inputs:
