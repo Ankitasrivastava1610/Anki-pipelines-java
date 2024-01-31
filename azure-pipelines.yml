@@ -48,7 +48,7 @@ stages:
     steps:
       - task: CopyFiles@2
         inputs:
-          Contents: '**'
+          Contents: '/home/vsts/work/1/s/target/helloworld.war'
           TargetFolder: '$(Build.ArtifactStagingDirectory)'
 
       - task: PublishBuildArtifacts@1
