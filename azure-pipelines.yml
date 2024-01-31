@@ -4,32 +4,32 @@ trigger:
 stages:
 - stage: "Build"
   jobs:
-  - job: "compile"
-    steps:
-      - task: Maven@4
-        inputs:
-          mavenPomFile: 'pom.xml'
-          goals: 'compile'
-          publishJUnitResults: false
-          javaHomeOption: 'JDKVersion'
-          mavenVersionOption: 'Default'
-          mavenAuthenticateFeed: false
-          effectivePomSkip: false
+  # - job: "compile"
+  #   steps:
+  #     - task: Maven@4
+  #       inputs:
+  #         mavenPomFile: 'pom.xml'
+  #         goals: 'compile'
+  #         publishJUnitResults: false
+  #         javaHomeOption: 'JDKVersion'
+  #         mavenVersionOption: 'Default'
+  #         mavenAuthenticateFeed: false
+  #         effectivePomSkip: false
 
-  - job: "test"
-    steps:
-      - task: Maven@4
-        inputs:
-          mavenPomFile: 'pom.xml'
-          goals: 'test'
-          publishJUnitResults: true
-          testResultsFiles: '**/surefire-reports/TEST-*.xml'
-          testRunTitle: 'Unit Test'
-          javaHomeOption: 'JDKVersion'
-          mavenVersionOption: 'Default'
-          mavenAuthenticateFeed: false
-          effectivePomSkip: false
-          pmdRunAnalysis: true
+  # - job: "test"
+  #   steps:
+  #     - task: Maven@4
+  #       inputs:
+  #         mavenPomFile: 'pom.xml'
+  #         goals: 'test'
+  #         publishJUnitResults: true
+  #         testResultsFiles: '**/surefire-reports/TEST-*.xml'
+  #         testRunTitle: 'Unit Test'
+  #         javaHomeOption: 'JDKVersion'
+  #         mavenVersionOption: 'Default'
+  #         mavenAuthenticateFeed: false
+  #         effectivePomSkip: false
+  #         pmdRunAnalysis: true
           
   - job: "package"
     steps:
@@ -46,13 +46,14 @@ stages:
   - job: "publish"
     dependsOn: package
     steps:
-      - task: CopyFiles@2
+      - task: PublishPipelineArtifact@1
         inputs:
-          Contents: '/home/vsts/work/1/s/target/helloworld.war'
-          TargetFolder: '$(Build.ArtifactStagingDirectory)'
+          targetPath: '$(Pipeline.Workspace)'
+          artifact: 'Drop1'
+          publishLocation: 'pipeline'
 
-      - task: PublishBuildArtifacts@1
-        inputs:
-          PathtoPublish: '$(Build.ArtifactStagingDirectory)'
-          ArtifactName: 'drop'
-          publishLocation: 'Container'
+      # - task: PublishBuildArtifacts@1
+      #   inputs:
+      #     PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+      #     ArtifactName: 'drop'
+      #     publishLocation: 'Container'
